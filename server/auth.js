@@ -18,7 +18,8 @@ function setupAuth(User, Config, app) {
     {
       clientID: Config.facebookClientId,
       clientSecret: Config.facebookClientSecret,
-      callbackURL: 'http://localhost:3000/auth/facebook/callback'
+      callbackURL: 'http://localhost:3000/auth/facebook/callback',
+      profileFields: ['id', 'emails', 'name', 'gender', 'displayName','profileUrl']
     },
     function(accessToken, refreshToken, profile, done) {
       if (!profile.emails || !profile.emails.length) {

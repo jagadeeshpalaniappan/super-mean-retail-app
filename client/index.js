@@ -22,7 +22,7 @@ var app = angular.module('mean-retail', ['mean-retail.components', 'ngRoute']);
 app.config(function($routeProvider) {
   $routeProvider.
     when('/category/:category', {
-      templateUrl: '/B-examples/templates/category_view.html'
+      templateUrl: '/client/templates/category_view.html'
     }).
     when('/checkout', {
       template: '<checkout></checkout>'
