@@ -1,22 +1,41 @@
-var express = require('express');
-var wagner = require('wagner-core');
+//NodeJS Libraries
 
+var express = require('express');     //NodeJS 'Web App Framework'
+var wagner = require('wagner-core');  //NodeJS 'Dependency Injection'  :helps to separate the Construction and Initialization
+
+
+//Database Models (passing 'wagner' obj)
 require('./models')(wagner);
+
+//Database Models (passing 'wagner' obj)
 require('./dependencies')(wagner);
 
+
+//Create a Express App
 var app = express();
 
-app.use(function(req, res, next) {
+
+//-----------------Express Configuration-------------------
+
+//Attach : 'Hybrid Mobile App Configuration' with Express
+//This configuration helps to ALLOW -Cross Origin -requests from any origin
+app.use(function (req, res, next) {
   res.append('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.append('Access-Control-Allow-Credentials', 'true');
   res.append('Access-Control-Allow-Methods', ['GET', 'OPTIONS', 'PUT', 'POST']);
-  res.append('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept');
+  res.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
+
+
+//Attach: 'Logger' Module with Express
 app.use(require('morgan')());
 
-wagner.invoke(require('./auth'), { app: app });
+
+//Attach: 'Passport Authentication Configuration' with Express
+//Calling setupAuth function using 'wagner' --so all dependencies will be attached
+//Also passing local dependency 'app' -while calling the setupAuth function
+wagner.invoke(require('./auth'), {app: app});
 
 app.use('/api/v1', require('./api')(wagner));
 
@@ -24,7 +43,10 @@ app.use('/api/v1', require('./api')(wagner));
 // For instance, '/6-examples/hello-http.html' in
 // the browser will show the '../6-examples/hello-http.html'
 // file.
-app.use(express.static('../', { maxAge: 4 * 60 * 60 * 1000 /* 2hrs */ }));
+//app.use(express.static('../', {maxAge: 4 * 60 * 60 * 1000 /* 2hrs */}));
+
+app.use(express.static('../client', {maxAge: 4 * 60 * 60 * 1000 /* 2hrs */}));
+
 
 app.listen(3000);
 console.log('Listening on port 3000!');

@@ -14,6 +14,22 @@
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
+
+    <!--
+     JNOTES:
+      Cordova loads 'index.html' using 'file://protocol'
+        -So the index.html page and associated JavaScript has NO-ORGIN
+        -But this helps to render JS files locally (without Internet Connection)
+        -GOOD-PART: Cordova enable you to violate the same origin policy
+      "NO SAME ORIGIN POLICY for NATIVE MOBILE APPS"
+
+      So we have to just add our DOMAIN information (http://localhost:3000) in AngularJS Interceptors
+    -->
+
+
+
+
+
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 

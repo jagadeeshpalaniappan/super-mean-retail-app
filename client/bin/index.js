@@ -5,7 +5,7 @@ exports.AddToCartController = function($scope, $http, $user, $timeout) {
     $user.user.data.cart.push(obj);
 
     $http.
-      put('/api/v1/me/cart', $user.user).
+      put('/api/v1/me/cart', { data: { cart: $user.user.data.cart } }).
       success(function(data) {
         $user.loadUser();
         $scope.success = true;
@@ -131,42 +131,42 @@ exports.ProductDetailsController = function($scope, $routeParams, $http) {
 exports.addToCart = function() {
   return {
     controller: 'AddToCartController',
-    templateUrl: '/client/templates/add_to_cart.html'
+    templateUrl: '/templates/add_to_cart.html'
   };
 };
 
 exports.categoryProducts = function() {
   return {
     controller: 'CategoryProductsController',
-    templateUrl: '/client/templates/category_products.html'
+    templateUrl: '/templates/category_products.html'
   }
 };
 
 exports.categoryTree = function() {
   return {
     controller: 'CategoryTreeController',
-    templateUrl: '/client/templates/category_tree.html'
+    templateUrl: '/templates/category_tree.html'
   }
 };
 
 exports.checkout = function() {
   return {
     controller: 'CheckoutController',
-    templateUrl: '/client/templates/checkout.html'
+    templateUrl: '/templates/checkout.html'
   };
 };
 
 exports.navBar = function() {
   return {
     controller: 'NavBarController',
-    templateUrl: '/client/templates/nav_bar.html'
+    templateUrl: '/templates/nav_bar.html'
   };
 };
 
 exports.productDetails = function() {
   return {
     controller: 'ProductDetailsController',
-    templateUrl: '/client/templates/product_details.html'
+    templateUrl: '/templates/product_details.html'
   };
 };
 
@@ -178,31 +178,37 @@ var _ = require('underscore');
 
 var components = angular.module('mean-retail.components', ['ng']);
 
-_.each(controllers, function(controller, name) {
-  components.controller(name, controller);
+_.each(controllers, function (controller, name) {
+    components.controller(name, controller);
 });
 
-_.each(directives, function(directive, name) {
-  components.directive(name, directive);
+_.each(directives, function (directive, name) {
+    components.directive(name, directive);
 });
 
-_.each(services, function(factory, name) {
-  components.factory(name, factory);
+_.each(services, function (factory, name) {
+    components.factory(name, factory);
 });
 
 var app = angular.module('mean-retail', ['mean-retail.components', 'ngRoute']);
 
-app.config(function($routeProvider) {
-  $routeProvider.
-    when('/category/:category', {
-      templateUrl: '/client/templates/category_view.html'
-    }).
-    when('/checkout', {
-      template: '<checkout></checkout>'
-    }).
-    when('/product/:id', {
-      template: '<product-details></product-details>'
-    });
+app.config(function ($routeProvider) {
+    $routeProvider.
+        when('/category/:category', {
+            templateUrl: '/templates/category_view.html'
+        }).
+        when('/checkout', {
+            template: '<checkout></checkout>'
+        }).
+        when('/product/:id', {
+            template: '<product-details></product-details>'
+        })
+
+
+        .when('/', {
+            templateUrl: "/templates/home.html"
+        })
+        .otherwise({redirectTo: '/'});
 });
 
 },{"./controllers":1,"./directives":2,"./services":6,"underscore":5}],4:[function(require,module,exports){
