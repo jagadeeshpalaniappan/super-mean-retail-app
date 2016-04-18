@@ -46,23 +46,55 @@ exports.CategoryProductsController = function($scope, $routeParams, $http) {
   }, 0);
 };
 
+
+
 exports.CategoryTreeController = function($scope, $routeParams, $http) {
+
+
   var encoded = encodeURIComponent($routeParams.category);
-  $http.
-    get('/api/v1/category/id/' + encoded).
-    success(function(data) {
+
+
+  //http://localhost:3000/api/v1/category/id/Books
+  $http
+      .get('/api/v1/category/id/' + encoded)
+      .success(function(data) {
+
+      //{"category":{"_id":"Books","ancestors":["Books"]}}
+
+      //Category
       $scope.category = data.category;
-      $http.
-        get('/api/v1/category/parent/' + encoded).
-        success(function(data) {
+
+
+      //http://localhost:3000/api/v1/category/parent/Books
+      $http
+          .get('/api/v1/category/parent/' + encoded)
+          .success(function(data) {
+
+          //data.categories :
+          //[{"_id":"Fiction","parent":"Books","ancestors":["Books","Fiction"]},{"_id":"Non-Fiction","parent":"Books","ancestors":["Books","Non-Fiction"]}]
+
+
+          //Child Categories
           $scope.children = data.categories;
+
+
         });
+
+
     });
 
+
+  //Refresh
   setTimeout(function() {
     $scope.$emit('CategoryTreeController');
   }, 0);
+
+
 };
+
+
+
+
 
 exports.CheckoutController = function($scope, $user, $http) {
   // For update cart
@@ -104,6 +136,9 @@ exports.CheckoutController = function($scope, $user, $http) {
   };
 };
 
+
+
+
 exports.NavBarController = function($scope, $user) {
   $scope.user = $user;
 
@@ -111,6 +146,9 @@ exports.NavBarController = function($scope, $user) {
     $scope.$emit('NavBarController');
   }, 0);
 };
+
+
+
 
 exports.ProductDetailsController = function($scope, $routeParams, $http) {
   var encoded = encodeURIComponent($routeParams.id);
