@@ -17,7 +17,7 @@ var app = express();
 
 //-----------------Express Configuration-------------------
 
-//Attach : 'Hybrid Mobile App Configuration' with Express
+//Attach : 'Hybrid Mobile App Configuration' with Express App
 //This configuration helps to ALLOW -Cross Origin -requests from any origin
 app.use(function (req, res, next) {
   res.append('Access-Control-Allow-Origin', req.headers.origin || '*');
@@ -28,15 +28,18 @@ app.use(function (req, res, next) {
 });
 
 
-//Attach: 'Logger' Module with Express
+//Attach: 'Logger' Module with Express App
 app.use(require('morgan')());
 
 
-//Attach: 'Passport Authentication Configuration' with Express
+//Attach: 'Passport Authentication Configuration' with Express App
 //Calling setupAuth function using 'wagner' --so all dependencies will be attached
 //Also passing local dependency 'app' -while calling the setupAuth function
 wagner.invoke(require('./auth'), {app: app});
 
+
+//REST -API
+//Attach: 'Router' 
 app.use('/api/v1', require('./api')(wagner));
 
 // Serve up static HTML pages from the file system.
@@ -45,8 +48,11 @@ app.use('/api/v1', require('./api')(wagner));
 // file.
 //app.use(express.static('../', {maxAge: 4 * 60 * 60 * 1000 /* 2hrs */}));
 
+
+//Attach: 'Static File Configuration' with Express App
 app.use(express.static('../client', {maxAge: 4 * 60 * 60 * 1000 /* 2hrs */}));
 
 
+//Application PORT
 app.listen(3000);
 console.log('Listening on port 3000!');
