@@ -4,10 +4,10 @@ var express = require('express');     //NodeJS 'Web App Framework'
 var wagner = require('wagner-core');  //NodeJS 'Dependency Injection'  :helps to separate the Construction and Initialization
 
 
-//Database Models (passing 'wagner' obj)
+//Adding Wagner Dependencies: MongoDB Models
 require('./models')(wagner);
 
-//Database Models (passing 'wagner' obj)
+//Adding Wagner Dependencies:  Stripe, Fx, Config
 require('./dependencies')(wagner);
 
 

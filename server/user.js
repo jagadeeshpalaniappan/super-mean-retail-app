@@ -1,32 +1,37 @@
 var mongoose = require('mongoose');
 
+
 module.exports = new mongoose.Schema({
-  profile: {
-    username: {
-      type: String,
-      required: true,
-      lowercase: true
+    profile: {
+        username: {
+            type: String,
+            required: true,
+            lowercase: true
+        },
+        picture: {
+            type: String,
+            required: true,
+            match: /^http:\/\//i
+        }
     },
-    picture: {
-      type: String,
-      required: true,
-      match: /^http:\/\//i
+    data: {
+        oauth: {type: String, required: true},
+
+        //Least Cardiniality: User will have limited no of Products in Cart
+        cart: [{
+            product: {
+                type: mongoose.Schema.Types.ObjectId
+            },
+            quantity: {
+                type: Number,
+                default: 1,
+                min: 1
+            }
+        }]
     }
-  },
-  data: {
-    oauth: { type: String, required: true },
-    cart: [{
-      product: {
-        type: mongoose.Schema.Types.ObjectId
-      },
-      quantity: {
-        type: Number,
-        default: 1,
-        min: 1
-      }
-    }]
-  }
 });
 
-module.exports.set('toObject', { virtuals: true });
-module.exports.set('toJSON', { virtuals: true });
+
+
+module.exports.set('toObject', {virtuals: true});
+module.exports.set('toJSON', {virtuals: true});
