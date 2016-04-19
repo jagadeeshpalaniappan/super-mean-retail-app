@@ -1,24 +1,37 @@
 var status = require('http-status');
 
-exports.$user = function($http) {
-  var s = {};
+exports.$user = function ($http) {
 
-  s.loadUser = function() {
-    $http.
-      get('/api/v1/me').
-      success(function(data) {
-        s.user = data.user;
-      }).
-      error(function(data, status) {
-        if (status === status.UNAUTHORIZED) {
-          s.user = null;
-        }
-      });
-  };
+    var s = {};
 
-  s.loadUser();
+    s.loadUser = function () {
 
-  setInterval(s.loadUser, 60 * 60 * 1000);
+        //Get User Information
+        $http
+            .get('/api/v1/me')
+            .success(function (data) {
 
-  return s;
+                //Load User information from DB
+                s.user = data.user;
+
+            })
+            .error(function (data, status) {
+
+                //401
+                if (status === status.UNAUTHORIZED) {
+                    s.user = null;
+                }
+
+            });
+    };
+
+
+    //Loading User
+    s.loadUser();
+
+
+
+    setInterval(s.loadUser, 60 * 60 * 1000);
+
+    return s;
 };
